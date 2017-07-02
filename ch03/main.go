@@ -22,12 +22,6 @@ func startJVM(cmd *Cmd) {
 	cf := loadClass(className, cp)
 	fmt.Println(cmd.class)
 	printClassInfo(cf)
-	//classData,_,err := cp.ReadClass(className)
-	//if err != nil {
-	//	fmt.Printf("Counld not find or load main class %s\n",cmd.class)
-	//	return
-	//}
-	//fmt.Printf("class data:%v\n",classData)
 }
 
 func loadClass(className string, cp *classpath.Classpath) *classfile.ClassFile {
