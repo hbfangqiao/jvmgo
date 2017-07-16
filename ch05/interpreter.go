@@ -50,7 +50,7 @@ func loop(thread *rtda.Thread,bytecode []byte) {
 		inst.FetchOperands(reader)
 		frame.SetNextPC(reader.PC())
 		//执行指令
-		fmt.Printf("pc:%2 inst:%T %v\n",pc,inst,inst)
+		fmt.Printf("pc:%2d inst:%T %v\n",pc,inst,inst)
 		inst.Execute(frame)
 	}
 }

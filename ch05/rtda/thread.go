@@ -1,12 +1,12 @@
 package rtda
 type Thread struct {
-	pc		int//PC寄存器
+	pc		int//PC寄存器 当前方法是java方法则存放当前正在执行的java虚拟机指令的地址
 	stack 		*Stack//JAVA虚拟机栈
 }
 /*新建栈结构体*/
 func NewThread() *Thread{
 	return &Thread{
-		stack: newStack(1024),
+		stack: newStack(1024),//该栈最多可以容纳1024个帧
 	}
 }
 func (self *Thread) PC() int {return self.pc}//getter
