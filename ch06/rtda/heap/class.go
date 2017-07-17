@@ -24,7 +24,7 @@ func newClass(cf *classfile.ClassFile) *Class {
 	class.name = cf.ClassName()
 	class.superClassName = cf.SuperClassName()
 	class.interfaceNames = cf.InterfaceNames()
-	class.constantPool = newConstanPool(class,cf.ConstantPool())
+	class.constantPool = newConstantPool(class,cf.ConstantPool())
 	class.fields = newFields(class,cf.Fields())
 	class.methods = newMethods(class, cf.Methods())
 	return class

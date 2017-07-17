@@ -4,6 +4,7 @@ import "jvmgo/ch06/classfile"
 /*字段信息 存入方法区*/
 type Field struct{
 	ClassMember
+	slotId uint
 }
 
 func newFields(class *Class,cfFields []*classfile.MemberInfo) []*Field {
