@@ -1,7 +1,7 @@
 package heap
 
 import "jvmgo/ch06/classfile"
-
+/*常量池中会存储本类所引用的类的类名，将所引用的类解析出来缓存*/
 type ClassRef struct {
 	SymRef
 }

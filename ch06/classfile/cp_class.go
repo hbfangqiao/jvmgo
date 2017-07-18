@@ -1,6 +1,6 @@
 package classfile
 
-/*类，超类或接口的符号引用*/
+/*constantPool中，类，超类或接口的符号引用，根据每个常量的u1 constant_info 来创建*/
 type ConstantClassInfo struct {
 	cp		ConstantPool
 	nameIndex	uint16

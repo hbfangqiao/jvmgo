@@ -1,6 +1,9 @@
 package heap
 
-import "jvmgo/ch06/classfile"
+import (
+	"jvmgo/ch06/classfile"
+	"strings"
+)
 /*类信息 放入方法区*/
 type Class struct {
 	accessFlags       uint16//类的访问标识
@@ -62,3 +65,15 @@ func (self *Class) IsEnum() bool {
 	return 0 != self.accessFlags&ACC_ENUM
 }
 /*－－－－－－判断访问标识符是否被设置＃－－－－－－－－－－*/
+
+func (self *Class) isAccessibleTo(other *Class) bool {
+	return self.IsPublic() || self.getPackageName() == other.getPackageName()
+}
+/*从类的全限定名中截取包名*/
+func (self *Class) getPackageName() string {
+	//当类定义在默认包中的话，它的包名是空字符串
+	if i := strings.LastIndex(self.name,"/"); i >= 0 {
+		return self.name[:i]
+	}
+	return ""
+}
