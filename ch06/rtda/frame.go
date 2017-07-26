@@ -1,5 +1,7 @@
 package rtda
 
+import "jvmgo/ch06/rtda/heap"
+
 type Frame struct {
 	lower		*Frame//实现链表数据结构
 	localVars 	LocalVars//局部变量表指针
@@ -31,6 +33,8 @@ func (self *Frame) OperandStack() *OperandStack {
 func (self *Frame) Thread() *Thread {
 	return self.thread
 }
+
+
 
 func (self *Frame) NextPC() int {
 	return self.nextPC

@@ -93,13 +93,13 @@ func verify(class *Class) {
 
 func prepare(class *Class) {
 	calcInstanceFieldSlotIds(class)//计算实例字段的个数，并给它们编号
-	calcStaticFieldSlotIds(class)
+	calcStaticFieldSlotIds(class)//计算静态字段的个数，并给它们编号
 	allocAndInitStaticVars(class)
 }
 /*计算实例字段的个数*/
 func calcInstanceFieldSlotIds(class *Class) {
 	slotId := uint(0)
-	if class.superClass != nil {
+	if class.superClass != nil {//发生在加载类的准备阶段，会递归加载超类。故这里的superclass的instanceSlotCount，已经计算出来
 		slotId = class.superClass.instanceSlotCount
 	}
 	for _, field := range class.fields {
@@ -137,7 +137,7 @@ func allocAndInitStaticVars(class *Class) {
 		}
 	}
 }
-
+/**从常量池中加载常量值，并给静态变量赋值*/
 func initStaticFinalVar(class *Class, field *Field) {
 	vars := class.staticVars
 	cp := class.constantPool

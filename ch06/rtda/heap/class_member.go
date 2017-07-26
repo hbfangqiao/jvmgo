@@ -60,7 +60,7 @@ func (self *ClassMember) isAccessibleTo(d *Class) bool {
 	if self.IsProtected() {
 		return d == c || d.isSubClassOf(c) || c.getPackageName() == d.getPackageName()
 	}
-	if !self.IsPrivate() {
+	if !self.IsPrivate() {//默认的访问权限
 		return c.getPackageName() == d.getPackageName()
 	}
 	return d == c
