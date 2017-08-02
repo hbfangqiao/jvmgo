@@ -125,6 +125,7 @@ func calcStaticFieldSlotIds(class *Class) {
 			}
 		}
 	}
+	class.staticSlotCount = slotId
 }
 /*给类变量分配空间，然后给它们初始值*/
 func allocAndInitStaticVars(class *Class) {
@@ -141,8 +142,8 @@ func allocAndInitStaticVars(class *Class) {
 func initStaticFinalVar(class *Class, field *Field) {
 	vars := class.staticVars
 	cp := class.constantPool
-	cpIndex := field.constValueIndex()
-	slotId := field.slotId()
+	cpIndex := field.ConstValueIndex()
+	slotId := field.SlotId()
 	if cpIndex > 0 {
 		switch field.Descriptor() {
 		case "Z", "B", "C", "S", "I"://Z boolean B byte C char S short I int

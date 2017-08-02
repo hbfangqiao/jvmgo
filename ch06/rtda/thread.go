@@ -1,4 +1,7 @@
 package rtda
+
+import "jvmgo/ch06/rtda/heap"
+
 type Thread struct {
 	pc		int//PC寄存器 当前方法是java方法则存放当前正在执行的java虚拟机指令的地址
 	stack 		*Stack//JAVA虚拟机栈
@@ -25,6 +28,6 @@ func (self *Thread) CurrentFrame() *Frame {
 	return self.stack.top()
 }
 
-func (self *Thread) NewFrame(maxLocals,maxStack uint) *Frame {
-	return newFrame(self,maxLocals,maxStack)
+func (self *Thread) NewFrame(method *heap.Method) *Frame {
+	return newFrame(self,method)
 }

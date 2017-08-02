@@ -31,7 +31,7 @@ func (self *CodeAttribute) Code() []byte {
 func (self *CodeAttribute) readInfo(reader *ClassReader) {
 	self.maxStack = reader.readUint16()
 	self.maxLocals = reader.readUint16()
-	codeLength := reader.readUnit32()
+	codeLength := reader.readUint32()
 	self.code = reader.readBytes(codeLength)
 	self.exceptionTable = readExceptionTable(reader)
 	self.attributes = readAttributes(reader, self.cp)

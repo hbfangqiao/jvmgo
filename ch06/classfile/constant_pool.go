@@ -1,43 +1,10 @@
 package classfile
 
 type ConstantPool []ConstantInfo
-type ConstantInfo interface {
-	//读取常量信息，由具体的结构体实现
-	readInfo(reader *ClassReader)
-}
 
-func readConstantInfo(reader *ClassReader, cp ConstantPool) ConstantInfo{
-	//读取出tag值
-	tag := reader.readUint8()
-	//创建具体常量
-	c := newConstantInfo(tag, cp)
-	//调用readInfo读取常量信息
-	c.readInfo(reader)
-	return c
-}
-/*根据tag值创建具体的常量*/
-func newConstantInfo(tag uint8,cp ConstantPool) ConstantInfo{
-	switch tag {
-	case CONSTANT_Integer: return &ConstantIntegerInfo{}
-	case CONSTANT_Float: return  &ConstantFloatInfo{}
-	case CONSTANT_Long: return  &ConstantLongInfo{}
-	case CONSTANT_Double: return &ConstantDoubleInfo{}
-	case CONSTANT_Utf8: return &ConstantUtf8Info{}
-	case CONSTANT_String: return &ConstantStringInfo{}
-	case CONSTANT_Class: return  &ConstantClassInfo{}
-	case CONSTANT_Fieldref:
-		return &ConstantFieldrefInfo{ConstantMemberrefInfo{cp :cp}}
-	case CONSTANT_Methodref:
-		return &ConstantMethodrefInfo{ConstantMemberrefInfo{cp :cp}}
-	case CONSTANT_InterfaceMethodref:
-		return &ConstantInterfaceMethodrefInfo{ConstantMemberrefInfo{cp :cp}}
-	case CONSTANT_NameAndType:return &ConstantNameAndTypeInfo{}
-	case CONSTANT_MethodType:return &ConstantMethodTypeInfo{}
-	case CONSTANT_MethodHandle:return &ConstantMethodHandleInfo{}
-	case CONSTANT_InvokeDynamic:return &ConstantInvokeDynamicInfo{}
-	default: panic("java.lang.ClassFormatError: constant pool tag!")
-	}
-}
+
+
+
 
 func readConstantPool(reader *ClassReader) ConstantPool{
 	//表头给出的常量池大小比实际大1，如果有CONSTANT_Long_info，CONSTANT_Double_info，则实际常量数比n-1还要少

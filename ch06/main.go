@@ -2,8 +2,8 @@ package main
 
 import "fmt"
 import "strings"
-import "jvmgo/ch06/classfile"
 import "jvmgo/ch06/classpath"
+import "jvmgo/ch06/rtda/heap"
 
 func main() {
 	cmd := parseCmd()
@@ -18,39 +18,19 @@ func main() {
 
 func startJVM(cmd *Cmd) {
 	cp := classpath.Parse(cmd.XjreOperation, cmd.cpOption)
+	classLoader := heap.NewClassLoader(cp)
 	className := strings.Replace(cmd.class,".","/",-1)
-	//读取并解析class文件
-	cf := loadClass(className,cp)
-	//查找类的main方法
-	mainMethod := getMainMethod(cf)
+	mainClass := classLoader.LoadClass(className)
+	mainMethod := mainClass.GetMainMethod()
 	if mainMethod != nil {
-		//执行main方法
 		interpret(mainMethod)
-	} else {
-		fmt.Printf("Main method not found in class %s\n",cmd.class)
+	}else {
+		fmt.Printf("Main method not found in class %s\n", cmd.class)
 	}
 
 }
-func loadClass(className string, cp *classpath.Classpath) *classfile.ClassFile {
-	classData, _, err := cp.ReadClass(className)
-	if err != nil {
-		panic(err)
-	}
-	cf, err := classfile.Parse(classData)
-	if err != nil {
-		panic(err)
-	}
-	return cf
-}
 
-func getMainMethod(cf *classfile.ClassFile) *classfile.MemberInfo {
-	for _, m := range cf.Methods() {
-		fmt.Println(m.Name(),m.Descriptor())
-		if m.Name() == "main" && m.Descriptor() == "([Ljava/lang/String;)V" {
-			return m
-		}
-	}
-	return nil
-}
+
+
 
 

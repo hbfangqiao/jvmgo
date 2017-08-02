@@ -20,6 +20,8 @@ import . "jvmgo/ch06/instructions/loads"
 
 import . "jvmgo/ch06/instructions/math"
 
+import . "jvmgo/ch06/instructions/references"
+
 import . "jvmgo/ch06/instructions/stack"
 
 import . "jvmgo/ch06/instructions/stores"
@@ -406,17 +408,17 @@ func NewInstruction(opcode byte) base.Instruction {
 
 		return &SIPUSH{}
 
-	// case 0x12:
+	case 0x12:
 
-	// 	return &LDC{}
+		return &LDC{}
 
-	// case 0x13:
+	case 0x13:
 
-	// 	return &LDC_W{}
+		return &LDC_W{}
 
-	// case 0x14:
+	case 0x14:
 
-	// 	return &LDC2_W{}
+		return &LDC2_W{}
 
 	case 0x15:
 
@@ -1046,29 +1048,29 @@ func NewInstruction(opcode byte) base.Instruction {
 
 	// 	return _return
 
-	//	case 0xb2:
+	case 0xb2:
 
-	//		return &GET_STATIC{}
+		return &GET_STATIC{}
 
-	// case 0xb3:
+	case 0xb3:
 
-	// 	return &PUT_STATIC{}
+		return &PUT_STATIC{}
 
-	// case 0xb4:
+	case 0xb4:
 
-	// 	return &GET_FIELD{}
+		return &GET_FIELD{}
 
-	// case 0xb5:
+	case 0xb5:
 
-	// 	return &PUT_FIELD{}
+		return &PUT_FIELD{}
 
-	//	case 0xb6:
+	case 0xb6:
 
-	//		return &INVOKE_VIRTUAL{}
+		return &INVOKE_VIRTUAL{}
 
-	// case 0xb7:
+	case 0xb7:
 
-	// 	return &INVOKE_SPECIAL{}
+		return &INVOKE_SPECIAL{}
 
 	// case 0xb8:
 
@@ -1082,9 +1084,9 @@ func NewInstruction(opcode byte) base.Instruction {
 
 	// 	return &INVOKE_DYNAMIC{}
 
-	// case 0xbb:
+	case 0xbb:
 
-	// 	return &NEW{}
+		return &NEW{}
 
 	// case 0xbc:
 
@@ -1102,13 +1104,13 @@ func NewInstruction(opcode byte) base.Instruction {
 
 	// 	return athrow
 
-	// case 0xc0:
+	case 0xc0:
 
-	// 	return &CHECK_CAST{}
+		return &CHECK_CAST{}
 
-	// case 0xc1:
+	case 0xc1:
 
-	// 	return &INSTANCE_OF{}
+		return &INSTANCE_OF{}
 
 	// case 0xc2:
 

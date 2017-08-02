@@ -46,7 +46,7 @@ func (self *ClassFile) read(reader *ClassReader){
 	self.attributes = readAttributes(reader,self.constantPool)
 }
 func (self *ClassFile) readAndCheckMagic(reader *ClassReader){
-	magic := reader.readUnit32()
+	magic := reader.readUint32()
 	if magic != 0xCAFEBABE {
 		panic("java.lang.ClassFormatError: magic!")
 	}

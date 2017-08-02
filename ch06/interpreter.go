@@ -1,27 +1,17 @@
 package main
 
 import "fmt"
-import "jvmgo/ch06/classfile"
 import "jvmgo/ch06/instructions"
 import "jvmgo/ch06/instructions/base"
 import "jvmgo/ch06/rtda"
+import "jvmgo/ch06/rtda/heap"
 
-func interpret(methodInfo *classfile.MemberInfo) {
-	//获取MemberInfo的Code属性
-	codeAttr := methodInfo.CodeAttribute()
-	//获取执行方法所需要的局部变量表
-	maxLocals := codeAttr.MaxLocals()
-	//获取执行方法所需要的栈空间
-	maxStack := codeAttr.MaxStack()
-	//获取方法的字节码
-	bytecode := codeAttr.Code()
-	//新建栈
+func interpret(method *heap.Method) {
 	thread := rtda.NewThread()
-	frame := thread.NewFrame(maxLocals,maxStack)
+	frame := thread.NewFrame(method)
 	thread.PushFrame(frame)
-
 	defer catchErr(frame)
-	loop(thread,bytecode)
+	loop(thread,method.Code())
 }
 /**
 解释器目前还没有办法优雅地结 束运行。因为每个方法的最后一条指令都是某个return指令，而还 没有实现return指令，
@@ -29,9 +19,9 @@ func interpret(methodInfo *classfile.MemberInfo) {
  */
 func catchErr(frame *rtda.Frame) {
 	if r := recover(); r != nil {
-		fmt.Printf("LocalVars:%v\n",frame.LocalVars())
-		fmt.Printf("OperandStack:%v\n",frame.OperandStack())
-		panic(r)
+		//fmt.Printf("LocalVars:%v\n",frame.LocalVars())
+		//fmt.Printf("OperandStack:%v\n",frame.OperandStack())
+		//panic(r)
 	}
 }
 

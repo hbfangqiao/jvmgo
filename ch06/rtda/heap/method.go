@@ -27,3 +27,16 @@ func (self *Method) copyAttributes(cfMethod *classfile.MemberInfo) {
 		self.code = codeAttr.Code()
 	}
 }
+
+//getters
+func (self *Method) MaxStack() uint {
+	return self.maxStack
+}
+
+func (self *Method) MaxLocals() uint {
+	return self.maxLocals
+}
+
+func (self *Method) Code() []byte {
+	return self.code
+}

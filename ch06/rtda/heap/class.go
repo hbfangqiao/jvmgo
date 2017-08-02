@@ -18,7 +18,7 @@ type Class struct {
 	interfaces        []*Class//接口指针
 	instanceSlotCount uint//实例变量占据空间大小
 	staticSlotCount   uint//类变量占据的空间大小
-	staticVars        *Slots//存放静态变量
+	staticVars        Slots//存放静态变量
 }
 
 func newClass(cf *classfile.ClassFile) *Class {
@@ -66,6 +66,15 @@ func (self *Class) IsEnum() bool {
 }
 /*－－－－－－判断访问标识符是否被设置＃－－－－－－－－－－*/
 
+//getters
+func (self *Class) ConstantPool() *ConstantPool {
+	return self.constantPool
+}
+
+func (self *Class) StaticVars() Slots {
+	return self.staticVars
+}
+
 func (self *Class) isAccessibleTo(other *Class) bool {
 	return self.IsPublic() || self.getPackageName() == other.getPackageName()
 }
@@ -76,6 +85,23 @@ func (self *Class) getPackageName() string {
 		return self.name[:i]
 	}
 	return ""
+}
+
+func (self *Class) GetMainMethod() *Method {
+	return self.getStaticMethod("main", "([Ljava/lang/String;)V")
+}
+
+
+func (self *Class) getStaticMethod(name, descriptor string) *Method {
+	for _, method := range self.methods {
+		if method.IsStatic() &&
+			method.name == name &&
+			method.descriptor == descriptor {
+			return method
+		}
+	}
+	return nil
+
 }
 
 func (self *Class) NewObject() *Object {

@@ -10,14 +10,16 @@ type Frame struct {
 	thread		*Thread
 	nextPC		int
 	//----------------------
+	method 		*heap.Method
 }
 
-func newFrame(thread *Thread,maxLocals, maxStack uint) *Frame{
+func newFrame(thread *Thread,method *heap.Method) *Frame{
 	//局部变量表大小maxLocals与操作数栈深度maxStack是由编译器预先计算好的，存储在class文件method_info结构体的Code属性中
 	return &Frame{
 		thread: 	thread,
-		localVars: 	newLocalVars(maxLocals),
-		operandStack:	newOperandStack(maxStack),
+		method:		method,
+		localVars: 	newLocalVars(method.MaxLocals()),
+		operandStack:	newOperandStack(method.MaxStack()),
 	}
 }
 
@@ -34,7 +36,9 @@ func (self *Frame) Thread() *Thread {
 	return self.thread
 }
 
-
+func (self *Frame) Method() *heap.Method {
+	return self.method
+}
 
 func (self *Frame) NextPC() int {
 	return self.nextPC
