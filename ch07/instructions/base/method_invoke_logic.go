@@ -22,7 +22,7 @@ func InvokeMethod(invokerFrame *rtda.Frame, method *heap.Method) {
 			newFrame.LocalVars().SetSlot(uint(i), slot)
 		}
 	}
-	
+
 	// hack!
 	if method.IsNative() {
 		if method.Name() == "registerNatives" {
