@@ -138,6 +138,20 @@ func (self *Class) getStaticMethod(name, descriptor string) *Method {
 
 }
 
+/*根据字段名和描述符查找字段*/
+func (self *Class) getField(name, descriptor string, isStatic bool) *Field {
+	for c := self; c != nil; c = c.superClass {
+		for _, field := range c.fields {
+			if field.IsStatic() == isStatic &&//是否都是静态的
+				field.name == name &&//是否同名
+				field.descriptor == descriptor {//描述符是否相同
+				return field
+			}
+		}
+	}
+	return nil
+}
+
 func (self *Class) isJlObject() bool {
 	return self.name == "java/lang/Object"
 }
@@ -157,4 +171,17 @@ func (self *Class) NewObject() *Object {
 func (self *Class) ArrayClass() *Class {
 	arrayClassName := getArrayClassName(self.name)
 	return self.loader.LoadClass(arrayClassName)
+}
+
+func (self *Object) GetRefVar(name, descriptor string) *Object {
+	field := self.class.getField(name, descriptor, false)
+	slots := self.data.(Slots)
+	return slots.GetRef(field.slotId)
+}
+/*通过域名，修饰符，给对象的引用类型实例变量赋值为ref，*/
+func (self *Object) SetRefVar(name, descriptor string, ref *Object) {
+	field := self.class.getField(name, descriptor, false)
+	slots := self.data.(Slots)
+	slots.SetRef(field.slotId, ref)
+
 }
