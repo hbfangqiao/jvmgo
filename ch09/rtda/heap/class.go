@@ -151,6 +151,20 @@ func (self *Class) getStaticMethod(name, descriptor string) *Method {
 
 }
 
+/*根据方法名和描述符查找字段*/
+func (self *Class) getMethod(name, descriptor string, isStatic bool) *Method {
+	for c := self; c != nil; c = c.superClass {
+		for _, method := range c.methods {
+			if method.IsStatic() == isStatic &&
+				method.name == name &&
+				method.descriptor == descriptor {
+				return method
+			}
+		}
+	}
+	return nil
+}
+
 /*根据字段名和描述符查找字段*/
 func (self *Class) getField(name, descriptor string, isStatic bool) *Field {
 	for c := self; c != nil; c = c.superClass {
@@ -185,4 +199,17 @@ func (self *Class) NewObject() *Object {
 func (self *Class) ArrayClass() *Class {
 	arrayClassName := getArrayClassName(self.name)
 	return self.loader.LoadClass(arrayClassName)
+}
+
+func (self *Class) GetInstanceMethod(name, descriptor string) *Method {
+	return self.getMethod(name, descriptor, false)
+}
+
+func (self *Class) GetRefVar(fieldName, fieldDescriptor string) *Object {
+	field := self.getField(fieldName, fieldDescriptor, true)
+	return self.staticVars.GetRef(field.slotId)
+}
+func (self *Class) SetRefVar(fieldName, fieldDescriptor string, ref *Object) {
+	field := self.getField(fieldName, fieldDescriptor, true)
+	self.staticVars.SetRef(field.slotId, ref)
 }

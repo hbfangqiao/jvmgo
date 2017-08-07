@@ -47,7 +47,7 @@ func (self *Object) GetRefVar(name, descriptor string) *Object {
 	slots := self.data.(Slots)
 	return slots.GetRef(field.slotId)
 }
-/*/*通过域名，修饰符，给对象的引用类型实例变量赋值为ref*/
+/*通过域名，修饰符，给对象的引用类型实例变量赋值为ref*/
 func (self *Object) SetRefVar(name, descriptor string, ref *Object) {
 	field := self.class.getField(name, descriptor, false)
 	slots := self.data.(Slots)
